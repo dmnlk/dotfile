@@ -87,45 +87,8 @@
           )
         )
       (setq count (1- count)))))
-;;php-mode
-(load-library "php-mode")
-(require 'php-mode)
 
-;; mmm-mode in php
-    ;; (require 'mmm-mode)
-    ;; (setq mmm-global-mode 'maybe)
-    ;; (set-face-background 'mmm-default-submode-face "nil")
-    ;; (mmm-add-mode-ext-class nil "\\.php?\\'" 'html-php)
-    ;; (mmm-add-classes
-    ;; '((html-php
-    ;; :submode php-mode
-    ;; :front "<\\?\\(php\\)?"
-    ;; :back "\\?>")))
-    ;; (add-to-list 'auto-mode-alist '("\\.php?\\'" . xml-mode))
-;;; mmm-mode
-(require 'mmm-mode)
-;(require 'mmm-auto)
-(setq mmm-submode-decoration-level 2)
-(invert-face 'mmm-default-submode-face t)
-(setq mmm-font-lock-available-p t)
-(setq mmm-global-mode 'maybe)
-; (set-face-bold-p 'mmm-default-submode-face t)
-;(set-face-background 'mmm-default-submode-face nil)
-(mmm-add-mode-ext-class nil "\\.php?\\'" 'html-php)
-(mmm-add-classes
- '((html-php
-    :submode php-mode
-    :front "<\\?\\(php\\)?"
-    :back "\\?>")))
-(add-to-list 'auto-mode-alist '("\\.php?\\'" . html-mode))
-;; タブの改善
-(defun save-mmm-c-locals ()
-  (with-temp-buffer
-    (php-mode)
-    (dolist (v (buffer-local-variables))
-      (when (string-match "\\`c-" (symbol-name (car v)))
-        (add-to-list 'mmm-save-local-variables `(,(car v) nil, mmm-c-derived-modes))))))
-(save-mmm-c-locals)
+
 ;;Rsense
 (setq rsense-home (expand-file-name "~/elisp/rsense"))
 (add-to-list 'load-path (concat rsense-home "/etc"))
@@ -171,3 +134,29 @@
       (display-buffer buf))))
 
 (define-key ruby-mode-map (kbd "C-p")'execute-ruby-whole-buffer)
+
+;;php-mode
+(load-library "php-mode")
+(require 'php-mode)
+(global-font-lock-mode t) 
+(require 'font-lock)
+(add-hook 'php-mode-user-hook 
+'(lambda () 
+(setq tab-width 2) 
+(setq indent-tabs-mode t)) 
+)
+;;html-helper-mode
+(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
+;; mmm-mode
+(require 'mmm-mode)
+(setq mmm-global-mode 'maybe)
+;; 色設定．これは，好みで．色をつけたくないなら nil にします．
+(set-face-background 'mmm-default-submode-face nil)
+
+;;カッコ補完
+(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "<") 'skeleton-pair-insert-maybe)
+(setq skeleton-pair 1)
