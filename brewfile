@@ -1,0 +1,42 @@
+# Homebrewを最新版にアップデート
+update
+
+# Formulaを更新
+upgrade
+
+# homebrew-caskのインストール
+tap phinze/homebrew-cask
+install brew-cask
+
+# cask versionsの登録
+tap caskroom/versions
+
+# homebrewから各種インストール
+install tomcat
+install node
+
+# homebrew-caskから各種インストール
+cask install google-chrome
+cask install sublime-text
+cask install virtualbox
+cask install vagrant
+cask install keyremap4macbook
+cask install iterm2
+cask install eclipse-ide
+cask install google-japanese-ime
+cask install limechat
+cask install tunnelblick
+cask install alfred
+cask install skype
+# javaに関してはJava8とJava7をそれぞれインストールする.
+cask install java
+cask install java7
+cask install gas-mask
+cask install sourcetree
+
+# alfredでシンボリックリンクを拾ってくれるハック
+cask alfred link
+
+# 不要なファイルを削除
+cleanup
+cask cleanup
