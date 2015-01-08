@@ -128,6 +128,7 @@ setopt cdable_vars sh_word_split
 setopt rm_star_wait          # rm * を実行する前に確認
 #setopt rm_star_silent        # rm * を実行する前に確認しない
 #setopt no_clobber            # リダイレクトで上書きを禁止
+setopt nonomatch #zsh: no matches found:対策
 
 
 case "$TERM" in
