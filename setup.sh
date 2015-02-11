@@ -70,6 +70,9 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 # Display full POSIX path as Finder window title
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
+# change scroll direction
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+
 # Enable tap to click (Trackpad)
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 
