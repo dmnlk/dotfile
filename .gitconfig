@@ -28,6 +28,30 @@
 	linenumber = yellow
 	match      = yellow reverse
 
+[core]
+	quotepath = false
+	whitespace = cr-at-eol
+	pager = $PAGER
+	precomposeunicode = true
+	excludesfile = ~/.global.gitignore
+
+[push]
+	default = simple
+
+[branch]
+	autosetuprebase = always
+
+[grep]
+	lineNumber = true
+	patternType = perl
+
+[rebase]
+	stat = true
+[pager]
+	log = diff-highlight-wrapper
+	show = diff-highlight-wrapper
+	diff = diff-highlight-wrapper
+	grep = false
 
 
 [github]
