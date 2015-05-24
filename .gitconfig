@@ -1,0 +1,37 @@
+[user]
+	name = dmnlk
+	email = seikima2demon@gmail.com
+
+[gui]
+	encoding = utf-8
+[color]
+	branch      = true
+	diff        = true
+	grep        = true
+	interactive = true
+	pager       = true
+	status      = true
+
+[color "branch"]
+	current = green reverse
+	local   = green
+	remote  = yellow
+
+[color "status"]
+	changed   = green
+	untracked = cyan
+	updated   = yellow
+
+[color "grep"]
+	filename   = cyan
+	function   = yellow
+	linenumber = yellow
+	match      = yellow reverse
+
+
+
+[github]
+	user = aereal
+
+[ghq]
+	root = ~/src
