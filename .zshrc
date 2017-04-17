@@ -3,7 +3,7 @@ export LANG=ja_JP.UTF-8
 export LSCOLORS=ExFxCxdxBxegedabagacad
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tz=01;31:*.rpm=01;31:*.cpio=01;31:*.jpg=01;35:*.gif=01;35:*.bmp=01;35:*.xbm=01;35:*.xpm=01;35:*.png=01;35:*.tif=01;35:'
 export PATH="/opt/local/android-sdk-macosx/tools:/opt/subversion/lib:$HOME/.rbenv/bin:/usr/local/bin:$PATH"
-export ANDROID_HOME=/usr/local/opt/android-sdk
+export ANDROID_HOME=/Users/m00217/dev/adt/
 export RBENV_ROOT=/usr/local/var/rbenv
 eval "$(rbenv init - zsh)"
 
@@ -13,17 +13,42 @@ export PATH=$GOPATH/bin:$PATH
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$GOROOT/bin:$PATH
 
+#git
+export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
 
 #alias
 alias ls='gls --color=auto'
 alias ll='ls -al'
 alias cd-ghq='cd $(ghq list --full-path | percol)'
 alias ctags='/usr/local/Cellar/ctags/5.8/bin/ctags'
+alias g=git
+alias gl='git log -n 20 --pretty=format:"%C(yellow)%h:%C(green)%an:%Creset%s:%C(red)%d"'
+alias gs='git status --short --branch'
+alias gst='git stash'
+alias gsp='git stash pop'
+alias vc='scutil --nc start'
+alias vd='scutil --nc stop'
+alias gc='git branch -a |percol|xargs git chechout'
+
+
 
 # for z.sh
 source /usr/local/Cellar/z/1.8/etc/profile.d/z.sh
 
 # zsh settings,
+
+# vcs_infoロード    
+autoload -Uz vcs_info    
+# # PROMPT変数内で変数参照する    
+setopt prompt_subst    
+#
+# # vcsの表示    
+zstyle ':vcs_info:*' formats '%s][* %F{green}%b%f'    
+zstyle ':vcs_info:*' actionformats '%s][* %F{green}%b%f(%F{red}%a%f)'    
+# プロンプト表示直前にvcs_info呼び出し    
+precmd() { vcs_info }    
+
+
 
 ## 補完
 autoload -U compinit ; compinit
@@ -102,6 +127,7 @@ PROMPT="%{$reset_color%}$ "
 PROMPT="%{$reset_color%}[%{$fg[red]%}%B%~%b%{$reset_color%}]$PROMPT"
 # 名前@マシン名 プロンプト
 PROMPT="%{$reset_color%}%{$fg[green]%}$USER%{$reset_color%}@%{$fg[cyan]%}%m%{$reset_color%}$PROMPT"
+PROMPT='[${vcs_info_msg_0_}]:%~/%f '
 RPROMPT="%{$fg[green]%}[%*]%{$reset_color%}"
 
 
@@ -167,18 +193,35 @@ zle -N percol_select_history
 bindkey '^R' percol_select_history
 
 function percol_select_directory() {
-local tac
-if which tac > /dev/null; then
-	tac="tac"
-else
-	tac="tail -r"
-fi
-local dest=$(_z -r 2>&1 | eval $tac | percol --query "$LBUFFER" | awk '{ print $2 }')
-if [ -n "${dest}" ]; then
-	cd ${dest}
-fi
-zle reset-prompt
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    local dest=$(_z -r 2>&1 | eval $tac | percol --query "$LBUFFER" | awk '{ print $2 }')
+    if [ -n "${dest}" ]; then
+        cd ${dest}
+    fi
+    zle reset-prompt
 }
 zle -N percol_select_directory
 bindkey "^X^J" percol_select_directory
 
+
+function percol_select_git_branch() {
+    BRANCH=$(git branch -a | percol --query "$LBUFFER")
+    if [ $? -eq 0 ]; then
+       git checkout $BRANCH
+       git submodule update --init
+    fi
+    zle reset-prompt
+    zle -R -c
+}
+zle -N percol_select_git_branch
+bindkey '^G' percol_select_git_branch
+
+
+function pe() {
+   pt "$@" . | peco --exec 'awk -F : '"'"'{print "+" $2 " " $1}'"'"' | xargs less -N '
+ }
